@@ -1,10 +1,5 @@
-* About
-Representation discrimination in printing media is a severe issue as the media often shapes our perception about certain topics. Hence, unequal representation of a community can result in social bias towards that community. This has been shown in numerous studies. From slavery to current ongoing protests for LGBT+ rights, we can see how severe the effect of representation of a community in the media has on public opinion.
-
-* Resources
-[[https://drive.google.com/drive/folders/1hVNusbqG1V_bV46qzrIVKRSIUHX2HnVA?usp=drive_link][This is the shared drive with litearture review and related contents.]]
-
-[[https://drive.google.com/file/d/1Qd8ShaY7WlzqfLbfub8oUOxHw2OLzBGA/view?usp=drive_link][This our curated dataset of ethnic people related articles]] from [[https://www.kaggle.com/datasets/ebiswas/bangla-largest-newspaper-dataset][ebD- Bangla newspaper dataset.]] We have curated ethnic people related dataset using simply keyword based extraction. We considered the following keywords to filter out the articles.
+* Experiment
+[[https://drive.google.com/file/d/1Qd8ShaY7WlzqfLbfub8oUOxHw2OLzBGA/view?usp=drive_link][This our curated dataset]] of ethnic word-contained articles from [[https://www.kaggle.com/datasets/ebiswas/bangla-largest-newspaper-dataset][ebD- Bangla newspaper dataset.]] We have curated ethnic people related dataset using simply keyword based extraction. We considered the following keywords to filter out the articles.
 #+begin_src python
   ethnic_tribe_names = [
     "চাকমা", "মারমা", "সাঁওতাল", "ত্রিপুরা", "গারো", "ওঁরাও", "তঞ্চ্যঙ্গা", "ম্রো", 
@@ -23,3 +18,6 @@ Following are the dimensions of resulting datasets.
 | [[https://www.kaggle.com/datasets/ebiswas/bangla-largest-newspaper-dataset][eBD Bangla news]]             | 2294710 articles | -                  |
 | Curated Ethnic Word Dataset | 337793 articles  | Keyword Extraction |
 |                             |                  |                    |
+
+* Resources
+[[https://drive.google.com/drive/folders/1hVNusbqG1V_bV46qzrIVKRSIUHX2HnVA?usp=drive_link][This is the shared drive]] with literature review and motivation behind the task.
