@@ -1,5 +1,5 @@
 * Experiment
-[[https://drive.google.com/file/d/1Qd8ShaY7WlzqfLbfub8oUOxHw2OLzBGA/view?usp=drive_link][This our curated dataset]] of ethnic word-contained articles from [[https://www.kaggle.com/datasets/ebiswas/bangla-largest-newspaper-dataset][ebD- Bangla newspaper dataset.]] We have curated ethnic people related dataset using simply keyword based extraction. We considered the following keywords to filter out the articles.
+[[https://drive.google.com/drive/folders/1hVNusbqG1V_bV46qzrIVKRSIUHX2HnVA?usp=drive_link][This our curated dataset]] of ethnic word-contained articles from [[https://www.kaggle.com/datasets/ebiswas/bangla-largest-newspaper-dataset][ebD- Bangla newspaper dataset.]] We have curated ethnic people related dataset using simply keyword based extraction. We considered the following keywords to filter out the articles.
 #+begin_src python
   ethnic_tribe_names = [
     "চাকমা", "মারমা", "সাঁওতাল", "ত্রিপুরা", "গারো", "ওঁরাও", "তঞ্চ্যঙ্গা", "ম্রো", 
@@ -14,10 +14,32 @@ ethnicity_directed_words = [
 #+end_src
 
 Following are the dimensions of resulting datasets.
-| Dataset                     | Size             | Approach           |
-| [[https://www.kaggle.com/datasets/ebiswas/bangla-largest-newspaper-dataset][eBD Bangla news]]             | 2294710 articles | -                  |
-| Curated Ethnic Word Dataset | 337793 articles  | Keyword Extraction |
-|                             |                  |                    |
+| Dataset                     |             Size | Approach           | Comment                                                                |
+| [[https://www.kaggle.com/datasets/ebiswas/bangla-largest-newspaper-dataset][eBD Bangla news]]             | 2294710 articles | -                  | -                                                                      |
+| Curated Ethnic Word Dataset |  337793 articles | Keyword Extraction | Buggy, For list of articles, same list is added continuously.          |
+| Target Ethnic Articles      |            14000 | 5 Keyword          | Topic modeling result came out bad due to repetition.                  |
+| Curated Ethnic Word Dataset |            10187 | Keyword Extraction | Fixed the bug where same article was being added for each of its words |
+| Most Relevant Articles      |              221 | 5 Keywords         |                                                                        |
+
+The only preprocessing we did was this -> ~to_remove = ['email\xa0protected', '\n\n\n\xa0\n\n\n\n\n', '\u200c্', '\n\n', '\xa0', '\n']~. These are the top 10 topics we found in the articles.
+#+begin_src text
+Topic 0: "পার্বত্য" "চট্টগ্রাম" "উপজেলার" "ত্রিপুরা" "প্রাথমিক" "শিশুদের" "বিভিন্ন" "উন্নয়ন" "পাঠ্যপুস্তক" "চেয়ারম্যান"
+Topic 1: "তঞ্চঙ্গ্যা" "সম্প্রদায়" "উৎসবকে" "তরুণীরা" "পাহাড়ের" "পুরাতন" "নেওয়ার" "লকডাউন" "বান্দরবানে" "সাঙ্গু"
+Topic 2: "আদিবাসী" "পরিষদের" "আওয়ামী" "সভাপতি" "সম্পাদক" "বক্তব্য" "পার্বত্য" "আদিবাসীদের" "সাধারণ" "চেয়ারম্যান"
+Topic 3: "বৈসাবি" "সাংগ্রাই" "সম্প্রদায়ের" "পাহাড়ি" "ঐতিহ্যবাহী" "এপ্রিল" "অনুষ্ঠান" "উৎসবের" "অনুষ্ঠিত" "প্রধান"
+Topic 4: "জন্মদিনকে" "ছোটাছুটি" "নালন্দার" "দলবদ্ধ" "দলগতভাবে" "নৃত্যকলা" "জন্মদিন" "গ্যালারির" "চতুর্থতলায়" "নৃত্যসহ"
+Topic 5: "বাংলাদেশে" "হিন্দু" "সাম্প্রদায়িক" "আক্রমণ" "সাম্প্রদায়িকতা" "ধর্মীয়" "কিন্তু" "লোকদের" "মুসলমান" "সাম্প্রদায়িকতার"
+Topic 6: "গ্রামের" "উপজেলার" "মেহেরপুর" "জয়পুরহাট" "উদ্দিনের" "বেনাপোল" "পাঁচবিবি" "সাতক্ষীরা" "চুয়াডাঙ্গা" "নববর্ষ"
+Topic 7: "পার্বত্য" "বিরুদ্ধে" "ভারতের" "বাহিনীর" "হিসেবে" "বাংলাদেশ" "উপজাতি" "সরকারের" "প্রবেশ" "নির্বাচিত"
+Topic 8: "ক্ষুদ্র" "গোষ্ঠীর" "বাঙালি" "সংস্কৃতি" "বিভিন্ন" "ত্রিপুরা" "নিজস্ব" "বাংলাদেশ" "কিন্তু" "বাংলাদেশের"
+Topic 9: "বাংলাদেশের" "আমাদের" "বাঙালি" "বাংলাদেশে" "বিভিন্ন" "বাংলাদেশ" "ধর্মের" "মানুষের" "ত্রিপুরা" "প্রশ্ন"
+#+end_src
 
 * Resources
 [[https://drive.google.com/drive/folders/1hVNusbqG1V_bV46qzrIVKRSIUHX2HnVA?usp=drive_link][This is the shared drive]] with literature review and motivation behind the task.
+
+We have also found some notebooks on bangla topic modeling.
+
+| Noteook                                               | Year | Approach      |
+| [[https://github.com/aljubaer/Topic-Modeling-in-Bengali]] | 2019 | Gensim TF-IDF |
+|                                                       |      |               |
