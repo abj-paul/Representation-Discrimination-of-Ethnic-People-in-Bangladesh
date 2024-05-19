@@ -1,4 +1,5 @@
 * Experiment
+** Phase 1
 [[https://drive.google.com/drive/folders/1hVNusbqG1V_bV46qzrIVKRSIUHX2HnVA?usp=drive_link][This our curated dataset]] of ethnic word-contained articles from [[https://www.kaggle.com/datasets/ebiswas/bangla-largest-newspaper-dataset][ebD- Bangla newspaper dataset.]] We have curated ethnic people related dataset using simply keyword based extraction. We considered the following keywords to filter out the articles.
 #+begin_src python
   ethnic_tribe_names = [
@@ -67,8 +68,16 @@ Topic 9:"উন্নয়ন" "পাহাড়" "ক্ষুদ্" "বিভ�
 The topics are interesting. We feel like the quality of our articles are not very good. We will verify this claim by considering coherence score. If coherence score is good and we still get such terrible topics, then most of articles just happen to contain ethnic people's names and they are not ethnic people related. In that case,
 
 - [ ] Use semi-supervised seeded LDA
+- [ ] Get word cloud for ethnic articles
 - [ ] Use doc2vec to convert articles to vectors and then use consine_similarity(doc2vec, ethnic_vector) to filter out articles that are actually ethnic people related.
-
+** Phase 2
+*** Perform Word Embedding to pick relevant words
+The dataset is large. So we will do the following.
+- [ ] In one colab, we will first conver the dataset into the bow form that the model needs. We will then save it.
+- [ ] Send batch by batch and use checkpointing. After training for 5min, stop training. See the status of the checkpoint.
+- [ ] Schedule and plan checkpoint based word embedding training.
+*** Estimate word frequency
+*** Survey
 * Resources
 [[https://drive.google.com/drive/folders/1hVNusbqG1V_bV46qzrIVKRSIUHX2HnVA?usp=drive_link][This is the shared drive]] with literature review and motivation behind the task.
 
