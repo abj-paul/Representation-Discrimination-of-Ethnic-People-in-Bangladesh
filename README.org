@@ -19,7 +19,7 @@ Following are the dimensions of resulting datasets.
 | [[https://www.kaggle.com/datasets/ebiswas/bangla-largest-newspaper-dataset][eBD Bangla news]]             | 2294710 articles | -                  | -                                                                      |
 | Curated Ethnic Word Dataset |  337793 articles | Keyword Extraction | Buggy, For list of articles, same list is added continuously.          |
 | Target Ethnic Articles      |            14000 | 5 Keyword          | Topic modeling result came out bad due to repetition.                  |
-| Curated Ethnic Word Dataset |            10187 | Keyword Extraction | Fixed the bug where same article was being added for each of its words |
+| Curated Ethnic Word Dataset |            [[https://drive.google.com/file/d/1xiJXor4yKYnEyNPEdFhAQfOkl8tf4Gsz/view?usp=drive_link][10187]] | Keyword Extraction | Fixed the bug where same article was being added for each of its words |
 | Most Relevant Articles      |              221 | 5 Keywords         |                                                                        |
 
 The only preprocessing we did was this -> ~to_remove = ['email\xa0protected', '\n\n\n\xa0\n\n\n\n\n', '\u200c্', '\n\n', '\xa0', '\n']~. These are the top 10 topics we found in the articles.
@@ -51,7 +51,7 @@ Topic 9: "গ্রাম" "সীমান্ত" "বিহার" "বর্�
 DataFrame shape(10, 2)
 #+end_src
 
-This time, we did LDA on the eniter ~10187~ articles containing ethnic words. We ended up with the following topics.
+This time, we did LDA on the eniter [[https://drive.google.com/file/d/1xiJXor4yKYnEyNPEdFhAQfOkl8tf4Gsz/view?usp=drive_link][10187]] articles containing ethnic words. We ended up with the following topics.
 #+begin_src text
 Topic 0:"পার্বত্য" "প্রধানমন্ত্রী" "বাংলাদেশ" "চট্টগ্রাম" "চাকমা" "ত্রিপুরা" "খাগড়াছড়ি" "ইউপিডিএফ" "বিএনপি" "রাঙ্গামাট"
 Topic 1:"শিক্ষা" "শিক্ষক" "সরকারি" "প্রাথমিক" "চাকরিতে" "সন্তান" "প্রশিক্ষণ" "বিদ্যাল" "শিশু" "সংস্ক"
