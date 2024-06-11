@@ -76,6 +76,8 @@ The dataset is large. So we will do the following.
 - [ ] In one colab, we will first conver the dataset into the bow form that the model needs. We will then save it.
 - [ ] Send batch by batch and use checkpointing. After training for 5min, stop training. See the status of the checkpoint.
 - [ ] Schedule and plan checkpoint based word embedding training.
+*** Zero Shot Classification
+We performed zero shot classification using chatGPT omni for 4 diverse news articles and chatGPT result matched with human annotators every time.
 *** Estimate word frequency
 *** Survey
 * Resources
