@@ -71,11 +71,34 @@ The topics are interesting. We feel like the quality of our articles are not ver
 - [ ] Get word cloud for ethnic articles
 - [ ] Use doc2vec to convert articles to vectors and then use consine_similarity(doc2vec, ethnic_vector) to filter out articles that are actually ethnic people related.
 ** Phase 2
-*** Perform Word Embedding to pick relevant words
-The dataset is large. So we will do the following.
-- [ ] In one colab, we will first conver the dataset into the bow form that the model needs. We will then save it.
-- [ ] Send batch by batch and use checkpointing. After training for 5min, stop training. See the status of the checkpoint.
-- [ ] Schedule and plan checkpoint based word embedding training.
+We can summarize the process in the following diagram.
+[[file:data/ethnic-article-finding-process.png]]
+*** Perform initial topic modeling to find more keywords
+We modeled coherence score against different alpha values of LDA model.
+[[file:misc/alpha_value_10187.png]]
+We had the highest coherence score for alpha value around 73. So we get our final topic list from an LDA with coherence score = 0.7394. The topic list is below.
+#+begin_src text
+Topic 0: "গ্রেফতার" "পুলিশ" "অভিযান" "গ্রাম" "উদ্ধ" "উপজেল" "অভিযোগ" "ব্যবসায়ী" "বিরুদ্ধ" "এলাক"
+Topic 1: "বিচারপতি" "হাইকোর্ট" "আইনজীবী" "কর" "আবেদন" "পুলিশ" "কর্মকর্তা" "মন্ত্রণালয়ের" "ওবায়দুল" "জেনার"
+Topic 2: "পরিবার" "আক্রান্ত" "স্বাস্থ্য" "ত্রিপুরা" "হাসপাতাল" "ইউনিয়ন" "মৃত্যু" "বান্দরবান" "দুর্গম" "কর্মকর্তা"
+Topic 3: "সম্পাদক" "সাধারণ" "সভাপতি" "পাপিয়া" "ছাত্রলীগ" "আওয়ামী" "সম্মেলন" "বর্তমান" "নরসিংদী" "কেন্দ্রীয়"
+Topic 4: "আন্দোলন" "ছাত্রলীগ" "শিক্ষার্থী" "প্রধানমন্ত্রী" "দাবি" "সাধারণ" "বিশ্ববিদ্যালয়ের" "আন্দোলনকারী" "বিক্ষোভ" "বিশ্ববিদ্যাল"
+Topic 5: "ব্যবস্থা" "সরকারি" "ক্ষেত্র" "বিসিএমসি" "মুক্তিযোদ্ধা" "নিশ্চিত" "প্রধানমন্ত্রী" "বাংলাদেশ" "সরকার" "মাধ্যম"
+Topic 6: "পাহাড়" "পর্যটন" "পর্যটক" "বিভিন্ন" "কক্সবাজার" "পর্যন্ত" "স্থানীয়" "কর্মকর্তা" "নির্মাণ" "এলাকা"
+Topic 7: "কাশ্মীর" "ভারত" "বাংলাদেশ" "ভারতী" "পাকিস্তান" "দি" "সংবিধান" "অনুচ্ছেদ" "মর্যাদা" "রাজ্য"
+Topic 8: "ব্যাংক" "গ্রাম" "প্রকল্প" "বিভিন্ন" "বিক্র" "ব্যবস্থা" "কোম্পানি" "পর্যন্ত" "বিদ্যুৎ" "ব্যবস্থাপনা"
+Topic 9: "চট্টগ্রাম" "আক্তার" "অভিযোগ" "পরিবার" "বিরুদ্ধ" "ব্যবস্থা" "কর্মকর্তা" "অফিস" "পুলিশ" "মামল"
+Topic 10:"শিক্ষার্থী" "শিক্ষা" "আমা" "ইঞ্জিনিয়ারিং" "অ্যান্ড" "বিভাগ" "প্রতিষ্ঠান" "শিক্ষক" "পরীক্ষা" "ক্যাম্পাস"
+Topic 11:"রোহিঙ্গা" "রাখাইন" "মিয়ানমারের" "সেনাবাহিনী" "বাংলাদেশ" "মিয়ানমার" "ক্যাম্প" "দেশ" "সীমান্ত" "জাতিসংঘ"
+Topic 12:"এলাকা" "হাসপাতাল" "সন্ত্রাসী" "চাকমা" "ইউপিডিএফ" "খাগড়াছড়ি" "উপজেল" "ঘটনাস্থল" "উদ্ধ" "উপজেলা"
+Topic 13:"প্রার্থী" "আওয়ামী" "বিএনপি" "নির্বাচন" "চেয়ারম্যান" "ইউনিয়ন" "উপজেলা" "উপজেল" "স্বতন্ত্র" "হয়েছেন"
+Topic 14:"কিন্তু" "আমা" "মানুষ" "কর" "প্রশ্ন" "সেখান" "যা" "হিস" "সম্পর্ক" "দি"
+Topic 15:"বাংলাদেশ" "বঙ্গবন্ধু" "মাধ্যম" "বিভিন্ন" "নাগরিক" "উন্নয়ন" "অনুষ্ঠান" "মুক্তিযুদ্ধ" "সমাজ" "আন্দোলন"
+Topic 16:"উপজেলা" "চেয়ারম্যান" "কর্মকর্তা" "সভাপতি" "প্রধান" "বক্তব্য" "সভাপতিত্ব" "প্রশাসন" "সম্পাদক" "উপস্থিত"
+Topic 17:"পার্বত্য" "চট্টগ্রাম" "আদিবাসী" "রাঙ্গামাট" "পাহাড়" "পরিষদ" "প্রধান" "ত্রিপুরা" "অনুষ্ঠান" "আঞ্চলিক"
+Topic 18:"সম্পাদক" "চৌধুরী" "উদ্দিন" "অ্যাডভোকেট" "মোহাম্মদ" "প্রমুখ" "কুমিল্লা" "বক্তব্য" "সমাবেশ" "চট্টগ্রাম"
+Topic 19:"সাংস্কৃতিক" "প্রশিক্ষণ" "অধ্যাপক" "পরিচালক" "অনুষ্ঠান" "শ্রদ্ধা" "শিল্পী" "একাডেমি" "কুমিল্লা" "মোজাফফর"
+#+end_src
 *** Zero Shot Classification
 We performed zero shot classification using chatGPT omni for 4 diverse news articles and chatGPT result matched with human annotators every time.
 *** Estimate word frequency
