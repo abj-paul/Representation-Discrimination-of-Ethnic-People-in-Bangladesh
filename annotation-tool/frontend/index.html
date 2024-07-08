@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Annotation</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        .navigation { 
+            margin-bottom: 20px; 
+            text-align: center;
+        }
+        .navigation button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #5a67d8;
+            color: white;
+            cursor: pointer;
+        }
+        .navigation button:hover {
+            background-color: #434190;
+        }
+        #article {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        .annotation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .annotation label {
+            margin: 10px;
+            font-size: 18px;
+        }
+        .annotation input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .annotation button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #38a169;
+            color: white;
+            cursor: pointer;
+        }
+        .annotation button:hover {
+            background-color: #2f855a;
+        }
+        .index {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Article Annotation</h1>
+    <div class="index">
+        Article Index: <span id="articleIndex">0</span>
+    </div>
+    <div class="navigation">
+        <button onclick="prevArticle()">Previous</button>
+        <button onclick="nextArticle()">Next</button>
+    </div>
+    <div id="article"></div>
+    <div class="annotation">
+        <label>
+            <input type="radio" name="isEthnic" value="true"> Ethnic
+        </label>
+        <label>
+            <input type="radio" name="isEthnic" value="false"> Not Ethnic
+        </label>
+        <br>
+        <label>Reason:</label>
+        <input type="text" id="reason">
+        <button onclick="submitAnnotation()">Submit</button>
+    </div>
+    <script>
+        let currentArticleId = 0;
+        let baseURL = "http://127.0.0.1:8000";
+
+        const ethnicTribeNames = [
+            "চাকমা", "মারমা", "সাঁওতাল", "ত্রিপুরা", "গারো", "ওঁরাও", "তঞ্চ্যঙ্গা", "ম্রো", 
+            "পাংখো", "চাক", "খেয়াং", "খুমি", "লুসাই","কুকি", "রাখাইন", "মণিপুরী",
+            "হাজং", "খাসিয়া", "মং", "বর্মন", "পাহাড়ি", "মালপাহাড়ি", "মুন্ডা", "ভূমিজ",
+            "কন্দ", "পাঙন", "লাওরা", "মুরং", "বাগদী"
+        ];
+
+        const ethnicityDirectedWords = [
+            "আদিবাসী", "আদিবাসি", "উপজাতি", "নৃগোষ্ঠী"
+        ];
+
+        async function fetchArticle(articleId) {
+            const response = await fetch(`${baseURL}/articles/${articleId}`);
+            if (response.ok) {
+                const data = await response.json();
+                const highlightedContent = highlightKeywords(data.article.content);
+                document.getElementById('article').innerHTML = highlightedContent;
+                document.getElementById('articleIndex').innerText = articleId;
+            } else {
+                alert('Article not found');
+            }
+        }
+
+        function highlightKeywords(content) {
+            const allKeywords = [...ethnicTribeNames, ...ethnicityDirectedWords];
+            let highlightedContent = content;
+            allKeywords.forEach(keyword => {
+                const regex = new RegExp(`(${keyword})`, 'gi');
+                highlightedContent = highlightedContent.replace(regex, '<span class="highlight">$1</span>');
+            });
+            return highlightedContent;
+        }
+
+        function prevArticle() {
+            if (currentArticleId > 0) {
+                currentArticleId--;
+                fetchArticle(currentArticleId);
+            }
+        }
+
+        function nextArticle() {
+            currentArticleId++;
+            fetchArticle(currentArticleId);
+        }
+
+        async function submitAnnotation() {
+            const isEthnic = document.querySelector('input[name="isEthnic"]:checked').value;
+            const reason = document.getElementById('reason').value;
+
+            const response = await fetch(`${baseURL}/annotate/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentArticleId, isEthnic: isEthnic === 'true', reason })
+            });
+		
+            if (response.ok) {
+                //alert('Annotation saved');
+                nextArticle();
+            } else {
+                alert('Failed to save annotation');
+            }
+        }
+
+        // Load the first article
+        fetchArticle(currentArticleId);
+    </script>
+</body>
+</html>
+
