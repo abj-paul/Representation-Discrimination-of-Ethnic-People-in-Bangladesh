@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observe documents for each topic</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Understand news articles corresponding to each topic</h1>
+        <input type="text" placeholder="Enter topic id" value="0" id="topicId" class="form-control"/>
+        <button class="btn btn-primary mt-2" onclick="fetchArticlesForTopic()">Submit</button>
+        <div id="articlesContainer" class="mt-4">
+            <!-- Articles will be dynamically inserted here -->
+        </div>
+        <button class="btn btn-success mt-4" onclick="submitAnnotations()">Submit Annotations</button>
+    </div>
+
+    <script>
+        let baseURL = "http://127.0.0.1:8000";
+
+        const ethnicTribeNames = [
+            "চাকমা", "মারমা", "সাঁওতাল", "ত্রিপুরা", "গারো", "ওঁরাও", "তঞ্চ্যঙ্গা", "ম্রো", 
+            "পাংখো", "চাক", "খেয়াং", "খুমি", "লুসাই","কুকি", "রাখাইন", "মণিপুরী",
+            "হাজং", "খাসিয়া", "মং", "বর্মন", "পাহাড়ি", "মালপাহাড়ি", "মুন্ডা", "ভূমিজ",
+            "কন্দ", "পাঙন", "লাওরা", "মুরং", "বাগদী"
+        ];
+
+        const ethnicityDirectedWords = [
+            "আদিবাসী", "আদিবাসি", "উপজাতি", "নৃগোষ্ঠী"
+        ];
+
+        async function fetchArticlesForTopic() {
+            const topicId = document.getElementById('topicId').value;
+            console.log(`The inserted topic id is ${topicId}`)
+            const response = await fetch(`${baseURL}/articles/topic/${topicId}`);
+            if (response.ok) {
+                const data = await response.json();
+                const articles = data.article.content;
+                const articlesContainer = document.getElementById('articlesContainer');
+                articlesContainer.innerHTML = ''; // Clear previous content
+
+                articles.forEach((article, index) => {
+                    const highlightedContent = highlightKeywords(article);
+                    const articleElement = document.createElement('div');
+                    articleElement.className = 'article';
+
+                    articleElement.innerHTML = `
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Article ${index + 1}</h5>
+                                <p class="card-text" id="article${index}">${highlightedContent}</p>
+                                <div class="form-group">
+                                    <label for="classification${index}">Classification:</label>
+                                    <select class="form-control" id="classification${index}">
+                                        <option value="NA">Not Annotated</option>
+                                        <option value="Straight">Straight</option>
+                                        <option value="Investigation">Investigation</option>
+                                        <option value="Commentary">Commentary</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    articlesContainer.appendChild(articleElement);
+                });
+
+            } else {
+                alert('Articles not found');
+            }
+        }
+
+        function highlightKeywords(content) {
+            const allKeywords = [...ethnicTribeNames, ...ethnicityDirectedWords];
+            let highlightedContent = content;
+            allKeywords.forEach(keyword => {
+                const regex = new RegExp(`(${keyword})`, 'gi');
+                highlightedContent = highlightedContent.replace(regex, '<span class="highlight">$1</span>');
+            });
+            return highlightedContent;
+        }
+
+        async function submitAnnotations() {
+            const articlesContainer = document.getElementById('articlesContainer');
+            const articles = articlesContainer.getElementsByClassName('article');
+            const annotations = [];
+
+            for (let i = 0; i < articles.length; i++) {
+                const classification = document.getElementById(`classification${i}`).value;
+                annotations.push({
+                    id: i,
+                    classification: classification
+                });
+            }
+
+            const response = await fetch(`${baseURL}/submit_annotations`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ annotations })
+            });
+
+            if (response.ok) {
+                alert('Annotations submitted successfully!');
+            } else {
+                alert('Failed to submit annotations');
+            }
+        }
+
+        // Load the first topic's articles by default
+        fetchArticlesForTopic();
+    </script>
+</body>
+</html>

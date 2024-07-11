@@ -1,1 +1,6 @@
 *envAnnotation*
+*pycache*
+*.zip
+.env
+*.csv
+*.joblib
