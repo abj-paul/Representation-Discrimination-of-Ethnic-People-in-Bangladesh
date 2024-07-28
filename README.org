@@ -118,6 +118,12 @@ Topic 14 "হত্য" "স্ত্রী" "কুমিল্লা" "না�
 We performed zero shot classification using chatGPT omni for 4 diverse news articles and chatGPT result matched with human annotators every time.
 *** Estimate word frequency
 *** Survey
+
+** Experiments
+| Experiment ID | Goal                                 | Result                                                | Resources   |
+|---------------+--------------------------------------+-------------------------------------------------------+-------------|
+|             1 | Finding good anchor words for topics | Use 40+ topics. This way, you can understand focuses. | [[https://drive.google.com/file/d/12xdkSO8A7kkI6cXwgrPsJQ0ss1tMpJYq/view?usp=drive_link][Result link]] |
+|             2 | Annotate to find ethnic articles     |                                                       |             |
 * Resources
 [[https://drive.google.com/drive/folders/1hVNusbqG1V_bV46qzrIVKRSIUHX2HnVA?usp=drive_link][This is the shared drive]] with literature review and motivation behind the task.
 
