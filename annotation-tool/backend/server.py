@@ -16,8 +16,11 @@ app.add_middleware(
 )
 
 # Load the CSV file
+CURRENT_EXP = "COREX_KEYWORD"
 df = pd.read_csv("cleaned_10k_articles.csv").sample(frac=1).reset_index(drop=True)
-grouped_docs = joblib.load("grouped_docs_110724.joblib")
+if CURRENT_EXP=="Initial": grouped_docs = joblib.load("grouped_docs_110724.joblib")
+elif CURRENT_EXP=="COREX_KEYWORD": grouped_docs = joblib.load("docs_per_topic_28July.joblib")
+
 df.to_csv("cleaned_10k_articles.csv")
 
 # Placeholder for annotations

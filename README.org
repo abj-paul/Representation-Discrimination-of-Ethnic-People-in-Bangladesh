@@ -124,6 +124,7 @@ We performed zero shot classification using chatGPT omni for 4 diverse news arti
 |---------------+--------------------------------------+-------------------------------------------------------+-------------|
 |             1 | Finding good anchor words for topics | Use 40+ topics. This way, you can understand focuses. | [[https://drive.google.com/file/d/12xdkSO8A7kkI6cXwgrPsJQ0ss1tMpJYq/view?usp=drive_link][Result link]] |
 |             2 | Annotate to find ethnic articles     |                                                       |             |
+|             3 | Nonethnic words 5432 topics          | [[https://drive.google.com/file/d/1M1oBS-dhXoZ0KR_M3UWZkZeabmSXbvfY/view?usp=drive_link][Topics Results]]                                                      |             |
 * Resources
 [[https://drive.google.com/drive/folders/1hVNusbqG1V_bV46qzrIVKRSIUHX2HnVA?usp=drive_link][This is the shared drive]] with literature review and motivation behind the task.
 
@@ -132,3 +133,25 @@ We have also found some notebooks on bangla topic modeling.
 | Noteook                                               | Year | Approach      |
 | [[https://github.com/aljubaer/Topic-Modeling-in-Bengali]] | 2019 | Gensim TF-IDF |
 |                                                       |      |               |
+|                                                      |      |               |
+Standard Words:
+#+begin_src python
+    genres = {
+    "Crime": ["অপরাধ", "হত্যাকাণ্ড", "ডাকাতি", "চুরি"],
+    "Politics": ["রাজনীতি", "নির্বাচন", "রাজনৈতিক দল", "প্রার্থী"],
+    "Natural Disaster": ["প্রাকৃতিক দুর্যোগ", "বন্যা", "ভূমিকম্প", "ঘূর্ণিঝড়"],
+    "Science & Environment": ["বিজ্ঞান", "পরিবেশ", "প্রযুক্তি", "উদ্ভাবন"],
+    "Govt. actions": ["সরকারি পদক্ষেপ", "নীতি", "আইন", "সিদ্ধান্ত"],
+    "Business & Economy": ["ব্যবসা", "অর্থনীতি", "বিনিয়োগ", "শেয়ার বাজার"],
+    "International Affairs": ["আন্তর্জাতিক সম্পর্ক", "বিশ্ব রাজনীতি", "সংঘাত", "চুক্তি"],
+    "Education": ["শিক্ষা", "বিদ্যালয়", "বিশ্ববিদ্যালয়", "পরীক্ষা"],
+    "Health": ["স্বাস্থ্য", "রোগ", "চিকিৎসা", "হাসপাতাল"],
+    "Sports": ["খেলা", "ফুটবল", "ক্রিকেট", "অলিম্পিক"],
+    "Protests": ["বিক্ষোভ", "আন্দোলন", "ধর্মঘট", "মিছিল"],
+    "Culture": ["সংস্কৃতি", "ঐতিহ্য", "শিল্প", "সংগীত"],
+    "Entertainment": ["বিনোদন", "সিনেমা", "নাটক", "গান"],
+    "Lifestyle": ["জীবনধারা", "ফ্যাশন", "স্বাস্থ্যকর অভ্যাস", "খাবার"],
+    "Tourism": ["পর্যটন", "ভ্রমণ", "পর্যটন কেন্দ্র", "পর্যটক"],
+    "Discourse": ["আলোচনা", "বক্তৃতা", "বিতর্ক", "প্রবন্ধ"]
+}
+#+end_src
