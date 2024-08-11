@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Annotation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            padding-top: 20px;
+        }
+        h1 {
+            color: #444;
+        }
+        #article {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        .categories {
+            background: #e2e8f0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .categories ul {
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Goal: Filter Ethnicity-specific Articles</h1>
+        <div class="index text-center mb-4">
+            <strong>Article Index:</strong> <span id="articleIndex">0</span>
+        </div>
+        <div id="article" class="mb-4"></div>
+        
+        <!-- Ethnicity Annotation Buttons -->
+        <div class="text-center mb-4">
+            <button class="btn btn-success mr-2" onclick="submitAnnotation('true')">Ethnic</button>
+            <button class="btn btn-danger" onclick="submitAnnotation('false')">Not Ethnic</button>
+        </div>
+
+        <!-- Collapsible Section Trigger -->
+        <button class="btn btn-info mb-3" type="button" data-toggle="collapse" data-target="#additionalOptions" aria-expanded="false" aria-controls="additionalOptions">
+            Show/Hide Options
+        </button>
+
+        <!-- Collapsible Section -->
+        <div class="collapse" id="additionalOptions">
+            <div class="card card-body mb-3">
+                <div class="row">
+                    <div class="form-group text-center mb-3 col-md-6">
+                        <label for="reason"><strong>Reason (Optional):</strong></label>
+                        <input type="text" class="form-control mx-auto" id="reason" style="max-width: 400px;">
+                        <button class="btn btn-secondary mt-2" onclick="submitAnnotation()">Submit</button>
+                    </div>
+                    <div class="categories text-center col-md-6">
+                        <strong>Inspiration:</strong>
+                        <ul class="d-inline-block text-left">
+                            <li>Crime</li>
+                            <li>Politics</li>
+                            <li>Natural Disaster</li>
+                            <li>Science & Environment</li>
+                            <li>Govt. Actions</li>
+                            <li>Business & Economy</li>
+                            <li>International Affairs</li>
+                            <li>Education</li>
+                            <li>Health</li>
+                            <li>Sports</li>
+                            <li>Protests</li>
+                            <li>Culture</li>
+                            <li>Entertainment</li>
+                            <li>Lifestyle</li>
+                            <li>Discourse</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="navigation text-center mt-3">
+                    <button class="btn btn-secondary mr-2" onclick="prevArticle()">Previous</button>
+                    <button class="btn btn-secondary" onclick="nextArticle()">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        let currentArticleId = 0;
+        let baseURL = "http://127.0.0.1:8000";
+
+        const ethnicTribeNames = [
+            "চাকমা", "মারমা", "সাঁওতাল", "ত্রিপুরা", "গারো", "ওঁরাও", "তঞ্চ্যঙ্গা", "ম্রো", 
+            "পাংখো", "চাক", "খেয়াং", "খুমি", "লুসাই","কুকি", "রাখাইন", "মণিপুরী",
+            "হাজং", "খাসিয়া", "মং", "বর্মন", "পাহাড়ি", "মালপাহাড়ি", "মুন্ডা", "ভূমিজ",
+            "কন্দ", "পাঙন", "লাওরা", "মুরং", "বাগদী"
+        ];
+
+        const ethnicityDirectedWords = [
+            "আদিবাসী", "আদিবাসি", "উপজাতি", "নৃগোষ্ঠী"
+        ];
+
+        async function fetchArticle(articleId) {
+            const response = await fetch(`${baseURL}/articles/${articleId}`);
+            if (response.ok) {
+                const data = await response.json();
+                const highlightedContent = highlightKeywords(data.article.content);
+                document.getElementById('article').innerHTML = highlightedContent;
+                document.getElementById('articleIndex').innerText = articleId;
+            } else {
+                alert('Article not found');
+            }
+        }
+
+        function highlightKeywords(content) {
+            const allKeywords = [...ethnicTribeNames, ...ethnicityDirectedWords];
+            let highlightedContent = content;
+            allKeywords.forEach(keyword => {
+                const regex = new RegExp(`(${keyword})`, 'gi');
+                highlightedContent = highlightedContent.replace(regex, '<span class="highlight">$1</span>');
+            });
+            return highlightedContent;
+        }
+
+        function prevArticle() {
+            if (currentArticleId > 0) {
+                currentArticleId--;
+                fetchArticle(currentArticleId);
+            }
+        }
+
+        function nextArticle() {
+            currentArticleId++;
+            fetchArticle(currentArticleId);
+        }
+
+        async function submitAnnotation(isEthnic) {
+            const reason = document.getElementById('reason').value;
+            const response = await fetch(`${baseURL}/annotate/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentArticleId, isEthnic: isEthnic === 'true', reason })
+            });
+		
+            if (response.ok) {
+                nextArticle();
+            } else {
+                alert('Failed to save annotation');
+            }
+        }
+
+        // Load the first article
+        fetchArticle(currentArticleId);
+    </script>
+</body>
+</html>

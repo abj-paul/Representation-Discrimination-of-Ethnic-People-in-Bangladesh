@@ -17,11 +17,9 @@ app.add_middleware(
 
 # Load the CSV file
 CURRENT_EXP = "COREX_KEYWORD"
-df = pd.read_csv("cleaned_10k_articles.csv").sample(frac=1).reset_index(drop=True)
+df = pd.read_csv("ethnic_dataset_exp0_5342.csv").reset_index(drop=True)
 if CURRENT_EXP=="Initial": grouped_docs = joblib.load("grouped_docs_110724.joblib")
 elif CURRENT_EXP=="COREX_KEYWORD": grouped_docs = joblib.load("docs_per_topic_28July.joblib")
-
-df.to_csv("cleaned_10k_articles.csv")
 
 # Placeholder for annotations
 annotations = pd.DataFrame(columns=['id', 'isEthnic', 'reason'])
@@ -39,6 +37,7 @@ class AnnotationsRequest(BaseModel):
 
 @app.get("/articles/{article_id}")
 async def get_article(article_id: int):
+    print(article_id)
     try:
         article = df.iloc[article_id]
     except IndexError:
@@ -50,7 +49,7 @@ async def annotate(annotation: Annotation):
     global annotations
     new_row = pd.DataFrame([annotation.dict()])
     annotations = pd.concat([annotations, new_row], ignore_index=True)
-    annotations.to_csv("exploratory_annotation.csv")
+    annotations.to_csv("ethnic_dataset_exp0_5342_annotated.csv")
     return {"message": "Annotation saved"}
 
 @app.get("/articles/topic/{topic_id}")
@@ -71,7 +70,7 @@ async def submit_annotations(request: AnnotationsRequest):
         })
 
     annotations_df = pd.DataFrame(annotations_data)
-    annotations_df.to_csv("result_annotations.csv", index=False)
+    annotations_df.to_csv("ethnic_dataset_exp0_5342_annotated.csv", index=False)
     return {"message": "Annotations submitted successfully"}
 
 if __name__ == '__main__':
