@@ -49,8 +49,8 @@
         
         <!-- Ethnicity Annotation Buttons -->
         <div class="text-center mb-4">
-            <button class="btn btn-success mr-2" onclick="submitAnnotation('true')">Ethnic</button>
-            <button class="btn btn-danger" onclick="submitAnnotation('false')">Not Ethnic</button>
+            <button class="btn btn-success mr-2" id="ethnicButton" onclick="submitAnnotation('true')">Ethnic (E)</button>
+            <button class="btn btn-danger" id="notEthnicButton" onclick="submitAnnotation('false')">Not Ethnic (N)</button>
         </div>
 
         <!-- Collapsible Section Trigger -->
@@ -155,13 +155,22 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: currentArticleId, isEthnic: isEthnic === 'true', reason })
             });
-		
+        
             if (response.ok) {
                 nextArticle();
             } else {
                 alert('Failed to save annotation');
             }
         }
+
+        // Add keybindings for Ethnic and Not Ethnic buttons
+        document.addEventListener('keydown', (event) => {
+            if (event.key.toLowerCase() === 'e') {
+                submitAnnotation('true');
+            } else if (event.key.toLowerCase() === 'n') {
+                submitAnnotation('false');
+            }
+        });
 
         // Load the first article
         fetchArticle(currentArticleId);
