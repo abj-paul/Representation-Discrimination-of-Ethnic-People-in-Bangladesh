@@ -124,7 +124,8 @@ We performed zero shot classification using chatGPT omni for 4 diverse news arti
 |---------------+--------------------------------------+-------------------------------------------------------+-------------|
 |             1 | Finding good anchor words for topics | Use 40+ topics. This way, you can understand focuses. | [[https://drive.google.com/file/d/12xdkSO8A7kkI6cXwgrPsJQ0ss1tMpJYq/view?usp=drive_link][Result link]] |
 |             2 | Annotate to find ethnic articles     |                                                       |             |
-|             3 | Nonethnic words 5432 topics          | [[https://drive.google.com/file/d/1M1oBS-dhXoZ0KR_M3UWZkZeabmSXbvfY/view?usp=drive_link][Topics Results]]                                                      |             |
+|             3 | Nonethnic words 5432 topics          | [[https://drive.google.com/file/d/1M1oBS-dhXoZ0KR_M3UWZkZeabmSXbvfY/view?usp=drive_link][Topics Results]]                                        |             |
+|             4 | Nonethnic words 100k                 |                                                       |             |
 
 ** Annotation
 I made this for fast annotation using keybinding.
