@@ -1,4 +1,4 @@
 *~
 *env*
-data/*
 *.ipynb_checkpoints*
+data/ethnic_dataset.joblib
