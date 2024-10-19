@@ -1,0 +1,8 @@
+Decide the text's frame between these options:
+
+    - responsibility. This frame presents an issue or problem in such a way as to attribute responsibility for its cause or solution to either the government or to an individual or group.
+    - human. This frame brings a human face or an emotional angle to the presentation of an event, issue, or problem.
+    - conflict. This frame emphasizes conflict between individuals, groups, or institutions as a means of capturing audience interest.
+    - morality. This frame puts the event, problem, or issue in the context of religious tenets or moral prescriptions.
+    - economic. This frame reports an event, problem, or issue in terms of the consequences it will have economically on an individual, group, institution, region, or country.
+
